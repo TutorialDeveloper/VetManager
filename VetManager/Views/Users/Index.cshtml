@@ -5,11 +5,25 @@
 }
 
 <h2>Informações do Usuário</h2>
-<div id="UserName" name="username"></div>
+<!--><div id="UserName" name="username"></div>
 <div id="Nome" name="nome"></div>
 <div id="Sobrenome" name="sobrenome"></div>
 <div id="DataNascimento" name="datanascimento"></div>
-<div id="Email" name="email"></div>
+<div id="Email" name="email"></div>-->
+
+<table class="table table-striped table-hover table-bordered">
+    <thead>
+        <tr>
+            <th><input type="checkbox" name="chooseAllRecipient" id="chooseAllRecipient" /></th>
+            <th class="center">Contact Name(s)</th>
+            <th class="center">Mobile Number(s)</th>
+        </tr>
+    </thead>
+
+    <tbody id="contacts"></tbody>
+</table>
+<button id="add_recipient">Add Selected Recipients</button>
+<select id="recipientList"></select>
 
 <script src="/Scripts/jquery.cookie.js"></script>
 <script>
@@ -22,12 +36,18 @@
             data: JSON.stringify(form), //Transforma o objeto javascript em JSON
             contentType: "application/json; charset=utf-8", //Tipo do conteúdo de envio
             dataType: "json", //Tipo do Retorno
-            success: function (response) {
+            /*success: function (response) {
                 $("#UserName").html("<b>Nome do Usuário:</b> " + response.UserName);
                 $("#Nome").html("<b>Nome:</b> " + response.FirstName);
                 $("#Sobrenome").html("<b>Sobrenome:</b> " + response.LastName);
                 $("#DataNascimento").html("<b>Data de Nascimento:</b> " + response.BirthDate);
-                $("#Email").html("<b>E-mail:</b> " + response.Email);
+                $("#Email").html("<b>E-mail:</b> " + response.Email);*/
+            success: function (data) {
+                var row = "";
+                $.each(data, function (index, item) {
+                    row += "<tr><td><input type='checkbox'id='" + item.Id + "' name='chooseRecipient' class='my_chkBox' /></td><td>" + item.Name + "</td><td>" + item.MobileNumber + "</td></tr>";
+                });
+                $("#contacts").html(row);  
             },
             error: function (response) {
                 alert("Erro ao recuperar usuário: " + response.FirstName);
